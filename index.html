@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Impacto | Onde a Realidade se Edita</title>
+    <style>
+        :root {
+            --primary-color: #ce1212;
+            --bg-color: #f4f4f4;
+            --card-bg: #ffffff;
+            --text-color: #333;
+            --accent-yellow: #fff3cd;
+            --border-color: #ddd;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-color: #1a1a1a;
+                --card-bg: #2d2d2d;
+                --text-color: #e0e0e0;
+                --accent-yellow: #3e3723;
+                --border-color: #444;
+            }
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: background 0.3s ease;
+        }
+
+        /* --- NAVEGAÇÃO --- */
+        header.main-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        nav {
+            background: #000;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            padding: 10px;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        nav a:hover { color: #ffcc00; }
+
+        /* --- SISTEMA DE ABAS --- */
+        .tab-content { display: none; padding: 20px; }
+        .tab-content.active { display: block; animation: fadeIn 0.5s; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; } to { opacity: 1; }
+        }
+
+        /* --- HOME PAGE --- */
+        .grid-noticias {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .card:hover { transform: translateY(-5px); }
+        .card img { width: 100%; height: 200px; object-fit: cover; }
+        .card-info { padding: 15px; }
+
+        /* --- ESTILO DOS ARTIGOS --- */
+        article {
+            max-width: 750px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .image-wrapper {
+            border-radius: 8px;
+            overflow: hidden;
+            background: #000;
+            margin: 20px 0;
+        }
+
+        img { width: 100%; display: block; }
+
+        .humor-note {
+            background-color: var(--accent-yellow);
+            padding: 20px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            border: 1px dashed var(--primary-color);
+            margin-top: 20px;
+        }
+
+        /* --- INTERAÇÕES (Likes, Share, Comentários) --- */
+        .interaction-bar {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border-color);
+            flex-wrap: wrap;
+        }
+
+        .btn-action {
+            background: none;
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: 0.2s;
+        }
+
+        .btn-action:hover { background: rgba(0,0,0,0.05); }
+        .btn-action.liked { color: var(--primary-color); border-color: var(--primary-color); }
+
+        .comment-section {
+            margin-top: 30px;
+            background: rgba(0,0,0,0.02);
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .comment-input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background: var(--card-bg);
+            color: var(--text-color);
+            margin-bottom: 10px;
+            resize: vertical;
+        }
+
+        /* --- CONFIGURAÇÕES --- */
+        .settings-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+        }
+
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        footer { text-align: center; padding: 3rem; opacity: 0.6; font-size: 0.8rem; }
+    </style>
+</head>
+<body>
+
+    <header class="main-header">
+        <h2 style="margin:0">⚡ PORTAL IMPACTO NEWS</h2>
+    </header>
+
+    <nav>
+        <a onclick="showTab('home')">INÍCIO</a>
+        <a onclick="showTab('vôlei')">ESPORTES</a>
+        <a onclick="showTab('fazenda')">RURAL</a>
+        <a onclick="showTab('config')">⚙️ CONFIGURAÇÕES</a>
+    </nav>
+
+    <main id="home" class="tab-content active">
+        <div style="text-align: center; margin-bottom: 40px;">
+            <h1>Destaques do Dia</h1>
+            <p>Onde a notícia e o absurdo se encontram.</p>
+        </div>
+
+        <div class="grid-noticias">
+            <div class="card" onclick="showTab('vôlei')">
+                <img src="images.jpg" alt="Vôlei">
+                <div class="card-info">
+                    <strong>ESPORTES</strong>
+                    <h3>Incidente cromático em quadra de vôlei</h3>
+                    <p>Colisão entre jogadores revela presenças que não deveriam estar lá.</p>
+                </div>
+            </div>
+
+            <div class="card" onclick="showTab('fazenda')">
+                <img src="vaca.jpg" alt="Vaca e Besouro">
+                <div class="card-info">
+                    <strong>RURAL</strong>
+                    <h3>Vaca mantém a calma durante invasão aérea</h3>
+                    <p>Animal apresenta comportamento exemplar em situação de estresse no campo.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <main id="vôlei" class="tab-content">
+        <article>
+            <h1>Colisão Fatal (de Riso) em Quadra</h1>
+            <p style="color: #888;">Por: Redação Impacto | Categoria: Esportes</p>
+            
+            <div class="image-wrapper">
+                <img src="images.jpg" alt="Vôlei Among Us">
+            </div>
+
+            <p>O que era para ser uma defesa padrão se transformou em um mistério intergaláctico. Testemunhas afirmam que os jogadores estão bem, mas o placar foi invalidado por "excesso de suspeita".</p>
+
+            <section class="humor-note">
+                <strong>🚨 ALERTA DE ANOMALIA:</strong><br>
+                Nossa equipe técnica detectou 4 tripulantes coloridos na imagem. A possibilidade de um "impostor" em quadra está sendo investigada.
+            </section>
+
+            <div class="interaction-bar">
+                <button class="btn-action" onclick="this.classList.toggle('liked')">❤️ Curtir</button>
+                <button class="btn-action" onclick="alert('Link de Esportes copiado!')">🔗 Compartilhar</button>
+            </div>
+
+            <div class="comment-section">
+                <h4>Comentários</h4>
+                <textarea class="comment-input" placeholder="Escreva o que você achou..."></textarea>
+                <button class="btn-action" style="background: var(--primary-color); color: white;">Postar</button>
+            </div>
+        </article>
+    </main>
+
+    <main id="fazenda" class="tab-content">
+        <article>
+            <h1>Vaca demonstra resiliência em corrida matinal</h1>
+            <p style="color: #888;">Por: Redação Rural | Categoria: Natureza</p>
+            
+            <div class="image-wrapper">
+                <img src="vaca.jpg" alt="Vaca fugindo de besouro">
+            </div>
+
+            <p>Um registro raro em uma fazenda local capturou o momento em que uma vaca, de comportamento perfeitamente normal e focado, exercitava sua agilidade nos pastos. O animal ignorou completamente as distrações ao seu redor, mantendo a calma característica da espécie.</p>
+
+            <section class="humor-note">
+                <strong>📝 NOTA DA EDIÇÃO:</strong><br>
+                Gostaríamos de esclarecer que, para fins estéticos, aumentamos apenas 5% do tamanho do escaravelho na imagem para dar um ar mais "dramático". Porém, após conferir os logs do sistema, descobrimos que <strong>nenhum dos nossos editores humanos fez essa alteração</strong>. Ele simplesmente apareceu assim.
+            </section>
+
+            <div class="interaction-bar">
+                <button class="btn-action" onclick="this.classList.toggle('liked')">❤️ Curtir</button>
+                <button class="btn-action" onclick="alert('Link Rural copiado!')">🔗 Compartilhar</button>
+            </div>
+
+            <div class="comment-section">
+                <h4>Comentários</h4>
+                <textarea class="comment-input" placeholder="Comente sobre o escaravelho..."></textarea>
+                <button class="btn-action" style="background: var(--primary-color); color: white;">Postar</button>
+            </div>
+        </article>
+    </main>
+
+    <main id="config" class="tab-content">
+        <div class="settings-container">
+            <h2>Configurações do Portal</h2>
+            
+            <div class="setting-item">
+                <span>Notificações de Emergência</span>
+                <input type="checkbox" checked>
+            </div>
+
+            <div class="setting-item">
+                <span>Tamanho da Fonte</span>
+                <select>
+                    <option>Normal</option>
+                    <option>Grande</option>
+                </select>
+            </div>
+
+            <div class="setting-item">
+                <span>Modo de Leitura Focado</span>
+                <input type="checkbox">
+            </div>
+
+            <div class="setting-item">
+                <span>Idioma do Portal</span>
+                <select>
+                    <option>Português (BR)</option>
+                    <option>Português (PT)</option>
+                </select>
+            </div>
+
+            <button class="btn-action" style="margin-top: 20px; width: 100%; justify-content: center; background: var(--primary-color); color: white;" onclick="alert('Salvo!')">Salvar Alterações</button>
+        </div>
+    </main>
+
+    <footer>
+        &copy; 2026 Portal de Notícias Impactantes | Sem fins lucrativos, apenas memes.
+    </footer>
+
+    <script>
+        function showTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.getElementById(tabId).classList.add('active');
+            window.scrollTo(0,0);
+        }
+    </script>
+</body>
+</html>
